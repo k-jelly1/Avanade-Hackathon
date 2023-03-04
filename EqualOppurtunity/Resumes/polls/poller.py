@@ -22,7 +22,7 @@ def get_vins():
 
     for job in content["Job Postings"]:
         JobAppsVO.objects.update_or_create(
-            job_id=job["job_id"],
+            job_id=job["id"],
             defaults={"title": job["title"]},
         )
 
