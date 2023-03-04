@@ -2,8 +2,9 @@ from django.db import models
 
 # Create your models here.
 
-# class JobAppsVO(models.Models):
-#     job_id = 
+class JobAppsVO(models.Model):
+    job_id = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
 
 
 

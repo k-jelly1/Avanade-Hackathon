@@ -6,12 +6,12 @@ import json
 import requests
 
 sys.path.append("")
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sales_project.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "EqualOppurtunity.settings")
 django.setup()
 
 # Import models from sales_rest, here.
 # from sales_rest.models import Something
-from sales_rest.models import AutomobileVO
+from Resumes.models import JobAppsVO
 
 
 def get_vins():
@@ -20,10 +20,10 @@ def get_vins():
 
     content = json.loads(response.content)
 
-    for automobile in content["Job Postings"]:
-        AutomobileVO.objects.update_or_create(
-            vin=automobile["vin"],
-            defaults={"name": automobile["model"]["name"]},
+    for job in content["Job Postings"]:
+        JobAppsVO.objects.update_or_create(
+            job_id=job["id"],
+            defaults={"title": job["title"]},
         )
 
 
