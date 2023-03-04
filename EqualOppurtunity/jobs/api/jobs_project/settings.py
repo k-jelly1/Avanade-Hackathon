@@ -42,12 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-<<<<<<< HEAD:EqualOppurtunity/EqualOppurtunity/settings.py
-CRONJOBS = [
-    ("* * * * *", "Resumes.poller.get_jobs"),
-]
-=======
->>>>>>> microservice:EqualOppurtunity/jobs/api/jobs_project/settings.py
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
