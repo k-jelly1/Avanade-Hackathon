@@ -3,9 +3,10 @@ import { useParams, useNavigate } from "react-router";
 
 export default function View() {
  const [form, setForm] = useState({
-   name: "",
-   position: "",
-   level: "",
+   title: "",
+   short_description: "",
+   description:"",
+   preferred_Experience:"",
    records: [],
  });
  const params = useParams();
@@ -14,7 +15,7 @@ export default function View() {
  useEffect(() => {
    async function fetchData() {
      const id = params.id.toString();
-     const response = await fetch(`http://localhost:5000/record/${params.id.toString()}`);
+     const response = await fetch(`http://127.0.0.1:8000/api/jobs/${params.id.toString()}`);
  
      if (!response.ok) {
        const message = `An error has occurred: ${response.statusText}`;
@@ -37,23 +38,26 @@ export default function View() {
    return;
  }, [params.id, navigate]);
 
- 
- // These methods will update the state properties.
- 
+  
  // This following section will display the form that takes input from the user to update the data.
  return (
    <div>
        <div className="form-group">
-         <label htmlFor="position">Position: </label>
-         <text> {form.position}
+         <label htmlFor="title">Title: </label>
+         <text> {form.title}
          </text>
        </div>
        <div className="form-group">
-         <label htmlFor="Location">Location: </label>
-         <text> {form.city},
+         <label htmlFor="description">Description: </label>
+         <text> {form.description}
          </text>
-         <text> {form.country}
+        </div>         
+
+        <div className="form-group">
+         <label htmlFor="experience">Preferred Experience: </label>
+         <text> {form.preferred_Experience}
          </text>
+
        </div>
        <br />
 
