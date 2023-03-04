@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "django_crontab",
     'corsheaders',
     "Resumes.apps.ResumesConfig",
     "Job_Apps.apps.JobAppsConfig",
@@ -40,6 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+
+CRONJOBS = [
+    ("* * * * *", "Resumes.poller.get_jobs"),
 ]
 
 MIDDLEWARE = [

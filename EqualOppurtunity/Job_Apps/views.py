@@ -19,9 +19,9 @@ class JobAppDecoder(ModelEncoder):
 def get_jobs(request):
 	if request.method == "GET":
 		jobs = JobPosting.objects.all()
-		for job in jobs:
-			print("Job: ", job.title)
-			print("id number: ", job.id) 
+		# for job in jobs:
+		# 	print("Job: ", job.title)
+		# 	print("id number: ", job.id) 
 			
 			
 		return JsonResponse({"Job Postings": jobs}, encoder=JobAppDecoder)
