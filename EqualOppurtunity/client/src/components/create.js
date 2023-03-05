@@ -7,6 +7,7 @@ export default function Create() {
   const recordId = new URLSearchParams(window.location.search).get("recordId");
   const [record, setRecord] = useState(null);
   const [form, setForm] = useState({
+    job_id: 0,
     q1: "",
     q2: "",
     q3: "",
@@ -32,7 +33,9 @@ export default function Create() {
   async function onSubmit(e) {
     e.preventDefault();
     const newCandidate = { ...form };
-    await fetch(`http://localhost:5000/record/${recordId}/applications/add`, {
+    console.log(newCandidate)
+    newCandidate["job_id"] = recordId
+    await fetch(`http://127.0.0.1:8001/api/resumes/apply/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -50,6 +53,7 @@ export default function Create() {
       window.alert(error.message);
     });
     setForm({
+       
       q1: "",
       q2: "",
       q3: "",

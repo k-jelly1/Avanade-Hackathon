@@ -22,9 +22,9 @@ export default function View() {
         }
         const record = await response.json();
         console.log('record:', record);
-        console.log('record title:', record["Job "].title);
+        console.log('record title:', record["Job"].title);
         console.log('des:', record.description);
-        setForm(record["Job "]);
+        setForm(record["Job"]);
       } catch (error) {
         console.error(error);
         window.alert(error.message);

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import json
 
 # Create your views here.
 from django.http import JsonResponse 
@@ -10,41 +11,64 @@ from django.views.decorators.http import require_http_methods
 
 #list all available job postings 
 
+class JobVODecoder(ModelEncoder):
+	model = JobAppsVO
+	properties = [
+		"job_id", "title"
+	]
+
 class ResumeDecoder(ModelEncoder):
     model = Resume
     properties = [
-		"id", "first_name", "last_name", "email", "phone", "work_experience", "past_projects", "certificates", "education", "job_id"
+	    "file",
 	]
+    # properties = [
+	# 	"id", "first_name", "last_name", "email", "phone", "work_experience", "past_projects", "certificates", "education", "job"
+	# ]
+    encoders = {"job": JobVODecoder()}
+    
 
-@require_http_methods(["GET"])
-def list_resume_for_job(request, pk = None):
+#returns all resume based on job id 
+@require_http_methods(["GET", "POST"])
+def list_resume_for_job(request, pk=None):
 	if request.method == "GET" and pk is not None:
-
-		job = JobAppsVO.objects.get(job_id=job)
-		if job is None:
-			return JsonResponse({"message": " This job application id does not exist in the database"})
+		try:
+			jobVO = JobAppsVO.objects.get(job_id=pk)
+			print(jobVO)
+			resumes = Resume.objects.filter(job=jobVO)
+			print(resumes)
+			print("end of try catch")
+			return JsonResponse({"resumes": resumes}, encoder=ResumeDecoder)
 	
-		resumes = Resume.objects.get(job_id=pk)
-			
-		return JsonResponse({"Resumes": resumes}, encoder=ResumeDecoder)
+		except: 
+			return JsonResponse({"message": "not a valid job id"})
+		
 	
 	if request.method == "GET" and pk is None:
 		return JsonResponse({"message": " Please enter a valid a valid job_id"})
 	
-
-# @require_http_methods(["GET"])
-# def list_resume_for_job(request, pk = None):
-# 	if request.method == "GET" and pk is None:
-# 		return JsonResponse({"message": " Please enter a valid a valid job_id"})
-		# resumes = Resume.objects.get(job_id=pk)
+	else: 
+		#if post, request must contain resume information and job_id 
+		content = json.loads(request.body)
+		print(content)
+		try:
+			job_id = content["job_id"]
 			
-		# return JsonResponse({"Resumes": resumes}, encoder=ResumeDecoder)
+			print(('pdf_file' in request.FILES))
 
-# @require_http_methods(["GET"])
-# def get_resumes(request, pk = None):
-# 	if request.method == "GET":
-# 		resumes = Resume.objects.all()
-#         return JsonResponse({"Resumes": resumes}, encoder=ResumeDecoder)
+			# print(resume_pdf)
+			
+			JobVO = JobAppsVO.objects.get(job_id=job_id)
+			
+			#JobVO exists in db -> job is valid to apply for 
 
-        
- 
+			# need to alter content of incoming data and format from pdf to text.
+			content["job"] = JobVO
+			# content["job_id"] = ""
+			resume = Resume.objects.create(**content)
+
+			return JsonResponse({"message:": "resume successfully added"})
+		except JobAppsVO.DoesNotExist:
+			return JsonResponse({"message:": "Please apply to a valid job posting"})
+		
+
