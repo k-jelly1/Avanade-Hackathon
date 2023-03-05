@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "django_crontab",
+    # "django_crontab",
     'corsheaders',
     "jobs_rest.apps.JobsRestConfig",
     'django.contrib.admin',

@@ -17,7 +17,7 @@ class Resume(models.Model):
     past_projects = models.TextField()
     certificates = models.CharField(max_length=255)
     education = models.CharField(max_length=255)
-    job_id = models.CharField(max_length=255)
-    file = models.BinaryField()
+    job = models.ForeignKey("JobAppsVO", related_name="Resume", on_delete=models.CASCADE)
+    # file = models.BinaryField()
     
     

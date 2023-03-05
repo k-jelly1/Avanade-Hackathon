@@ -19,10 +19,10 @@ export default function Create() {
     region: "",
     number: "",
   });
-
+  
   useEffect(() => {
     async function fetchRecord() {
-      const response = await fetch(`http://localhost:5000/record/${recordId}`);
+      const response = await fetch(`http://localhost:8000/api/jobs/${recordId}/`);
       const data = await response.json();
       setRecord(data);
     }
