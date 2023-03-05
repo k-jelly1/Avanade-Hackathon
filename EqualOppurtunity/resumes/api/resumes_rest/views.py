@@ -19,9 +19,9 @@ class JobVODecoder(ModelEncoder):
 
 class ResumeDecoder(ModelEncoder):
     model = Resume
-    properties = [
-		"id", "first_name", "last_name", "email", "phone", "work_experience", "past_projects", "certificates", "education", "job"
-	]
+    # properties = [
+	# 	"id", "first_name", "last_name", "email", "phone", "work_experience", "past_projects", "certificates", "education", "job"
+	# ]
     encoders = {"job": JobVODecoder()}
     
 
@@ -50,6 +50,7 @@ def list_resume_for_job(request, pk=None):
 		print(content)
 		try:
 			job_id = content["job_id"]
+			pdf = content[""]
 			
 			JobVO = JobAppsVO.objects.get(job_id=job_id)
 			
