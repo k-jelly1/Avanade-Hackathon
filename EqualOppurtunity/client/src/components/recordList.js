@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import logo from './logo.png';
 
 const Record = (props) => (
- <tr>
-   <td>{props.record.title}</td>
-   <td>{props.record.short_description}</td>
-   <td>{props.record.description}</td>
-   <td>{props.record.preferred_experience}</td>
-   <td>
-     <Link className="btn btn-link" to={`/view/${props.record.id}`}>View</Link>
-   </td>
- </tr>
+  <div className="col-md-4 mb-4">
+    <div className="card h-100">
+      <img className="card-img-top" src={props.record.image} alt={props.record.title} />
+      <div className="card-body">
+        <h5 className="card-title" style={{ fontSize: "1.2rem" }}>{props.record.title}</h5>
+        <p className="card-text">{props.record.description}</p>
+        <Link className="btn btn-primary" to={`/view/${props.record.id}`}>View</Link>
+      </div>
+    </div>
+  </div>
 );
 
 export default function RecordList() {
@@ -27,7 +28,6 @@ export default function RecordList() {
       }
       const records = await response.json();
       setRecords(records["Job Postings"]);
-      console.log("resordsssss"); // add this line to log the records array
     }
     getRecords();
   }, []);
@@ -51,19 +51,9 @@ export default function RecordList() {
           Job Postings
         </h3>
       </header>
-      <table className="table table-striped" style={{ marginTop: 20 }}>
-      <thead>
-  <tr>
-    <th>Title</th>
-    <th>Short Description</th>
-    <th>Description</th>
-    <th>Preferred Experience</th>
-    <th></th>
-  </tr>
-</thead>
-
-        <tbody>{recordList()}</tbody>
-      </table>
+      <div className="row row-cols-1 row-cols-md-3 g-4">
+        {recordList()}
+      </div>
     </div>
   );
 }
