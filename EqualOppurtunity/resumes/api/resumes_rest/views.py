@@ -1,5 +1,9 @@
 from django.shortcuts import render
 import json
+from django.utils.datastructures import MultiValueDict
+import PyPDF2
+import io
+import re 
 
 # Create your views here.
 from django.http import JsonResponse 
@@ -51,12 +55,73 @@ def list_resume_for_job(request, pk=None):
 		#if post, request must contain resume information and job_id 
 		# content = json.loads(request.body)
 		# print(content)
+	
 		try:
-			if 'pdf_file' in request.FILES: 
-				print(request.Files["pdf_file"])
+			pdf_file = request.FILES.get('pdfFile')
+			# print(pdf_file['Resume'])
+
+
+			# pdf_file = request.FILES.get('pdfFile')
+			
+			pdf_data = pdf_file.read()
+			# print(pdf_data)
+			pdf_reader = PyPDF2.PdfReader(io.BytesIO(pdf_data))
+			num_pages = len(pdf_reader.pages) 
+			pdf_text=''
+			for page_num in range(num_pages):
+				pdf_page = pdf_reader.pages[page_num] 
+				pdf_text+=pdf_page.extract_text()
+			json_data = json.dumps(pdf_text)
+			
+			bytes_data = json_data.encode("utf-8")
+
+			data = re.sub(r'[^\x20-\x7E]+', '', bytes_data.decode('utf-8'))
+			
+		
+			index_space = data.index(' ')
+			first_name = data[1:index_space]
+			
+			last_name = data.split()[1]
+
+			remove_arr = []
+			remove_arr.append(first_name)
+			remove_arr.append(last_name)
+			remove_arr.append(data.split()[0])
+			new_string = data 
+			for word in data.split():
+				for substring in remove_arr:
+					word = word.replace(substring,"*"*len(substring))
+					
+				new_string+=word+" "
+
+			print(new_string.strip())
+		
+			# data = data.replace(first_name, "*" * len(first_name))
+			# data = data.replace(last_name, "*" * len(last_name))	
+			# data = data.replace(data.split()[0],"*" * len(data.split()[0]))	
+			# print(data)
+
+			
+			# print(last_name)
+
+			
+			
+
+			# page_text = pdf_reader.pages[1].extract_text() 
+
+			# json_data = json.dumps({'pdf_text':page_text})
+			# print(json_data)
+			# num_pages = pdf_reader.getNumPages()
+
+			# post_data = MultiValueDict(request.POST)
+			# data_dict = dict(post_data.lists())
+			# data_json = json.dumps(data_dict)
+
+			# print(data_json)
+
 			# job_id = content["job_id"]
-			print(request)
-			print(('pdf_file' in request.FILES))
+			# print(request)
+			# print(('pdf_file' in request.FILES))
 
 			# print(resume_pdf)
 			

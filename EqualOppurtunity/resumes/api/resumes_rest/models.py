@@ -18,7 +18,9 @@ class Resume(models.Model):
     certificates = models.CharField(max_length=255)
     education = models.CharField(max_length=255)
     job = models.ForeignKey("JobAppsVO", related_name="Resume", on_delete=models.CASCADE)
-    
-    
+    skill= models.CharField(max_length=255)
+    reason= models.TextField()
+    value= models.TextField()
+    exp = models.PositiveSmallIntegerField(default=0)
     
     
