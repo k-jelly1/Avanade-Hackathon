@@ -18,6 +18,6 @@ class Resume(models.Model):
     certificates = models.CharField(max_length=255)
     education = models.CharField(max_length=255)
     job = models.ForeignKey("JobAppsVO", related_name="Resume", on_delete=models.CASCADE)
-    # file = models.BinaryField()
+    
     
     
