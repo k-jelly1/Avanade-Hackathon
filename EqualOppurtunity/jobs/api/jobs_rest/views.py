@@ -20,14 +20,14 @@ def get_jobs(request, pk=None):
 	if request.method == "GET" and pk is None:
 		jobs = JobPosting.objects.all()
 		for job in jobs:
-			print("Job: ", job.title)
-			print("id number: ", job.id) 
+			print("Job:", job.title)
+			print("id number:", job.id) 
 		return JsonResponse({"Job Postings": jobs}, encoder=JobAppDecoder)
 	else:
 		job = JobPosting.objects.get(id=pk)
 		if job is not None: 
-			return JsonResponse({"Job ": job}, encoder=JobAppDecoder)
-		return JsonResponse({"message: " "invalid job id"})
+			return JsonResponse({"Job": job}, encoder=JobAppDecoder)
+		return JsonResponse({"message:": "invalid job id"})
 			
 		
 	

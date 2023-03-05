@@ -18,4 +18,6 @@ class Resume(models.Model):
     certificates = models.CharField(max_length=255)
     education = models.CharField(max_length=255)
     job_id = models.CharField(max_length=255)
+    file = models.BinaryField()
+    
     
