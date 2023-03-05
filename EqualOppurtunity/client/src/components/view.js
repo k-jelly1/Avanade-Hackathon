@@ -11,32 +11,34 @@ export default function View() {
  });
  const params = useParams();
  const navigate = useNavigate();
- 
+
+
  useEffect(() => {
-   async function fetchData() {
-     const id = params.id.toString();
-     const response = await fetch(`http://127.0.0.1:8000/api/jobs/${params.id.toString()}`);
- 
-     if (!response.ok) {
-       const message = `An error has occurred: ${response.statusText}`;
-       window.alert(message);
-       return;
-     }
- 
-     const record = await response.json();
-     if (!record) {
-       window.alert(`Record with id ${id} not found`);
-       navigate("/");
-       return;
-     }
- 
-     setForm(record);
-   }
- 
-   fetchData();
- 
-   return;
- }, [params.id, navigate]);
+  async function fetchData() {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/jobs/${params.id.toString()}`);
+      if (!response.ok) {
+        throw new Error(`An error has occurred: ${response.statusText}`);
+      }
+      const record = await response.json();
+      console.log('record:', record);
+      console.log('record title:', record["Job "].title);
+      console.log('des:', record.description);
+      setForm(record["Job "]);
+    } catch (error) {
+      console.error(error);
+      window.alert(error.message);
+      navigate('/');
+    }
+  }
+
+
+  fetchData();
+  
+  return () => {
+    console.log('cleanup');
+  };
+}, [params.id, navigate]);
 
   
  // This following section will display the form that takes input from the user to update the data.
@@ -55,7 +57,7 @@ export default function View() {
 
         <div className="form-group">
          <label htmlFor="experience">Preferred Experience: </label>
-         <text> {form.preferred_Experience}
+         <text> {form.preferred_experience}
          </text>
 
        </div>
@@ -71,4 +73,4 @@ export default function View() {
       </div>
    </div>
  );
-}
+} 

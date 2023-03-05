@@ -3,8 +3,9 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import JsonResponse 
 from .models import Resume, JobAppsVO
-from common.json import ModelEncoder
+from .json import ModelEncoder
 from django.views.decorators.http import require_http_methods 
+
 # Create your views here.
 
 #list all available job postings 
@@ -31,10 +32,10 @@ def list_resume_for_job(request, pk = None):
 		return JsonResponse({"message": " Please enter a valid a valid job_id"})
 	
 
-@require_http_methods(["GET"])
-def list_resume_for_job(request, pk = None):
-	if request.method == "GET" and pk is None:
-		return JsonResponse({"message": " Please enter a valid a valid job_id"})
+# @require_http_methods(["GET"])
+# def list_resume_for_job(request, pk = None):
+# 	if request.method == "GET" and pk is None:
+# 		return JsonResponse({"message": " Please enter a valid a valid job_id"})
 		# resumes = Resume.objects.get(job_id=pk)
 			
 		# return JsonResponse({"Resumes": resumes}, encoder=ResumeDecoder)
