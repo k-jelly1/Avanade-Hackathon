@@ -7,13 +7,14 @@ export default function Create() {
   const recordId = new URLSearchParams(window.location.search).get("recordId");
   const [record, setRecord] = useState(null);
   const [form, setForm] = useState({
+    job_id: 0,
     q1: "",
     q2: "",
     q3: "",
     q4: "",
     resume: null,
   });
-  
+
   useEffect(() => {
     async function fetchRecord() {
       const response = await fetch(`http://localhost:8000/api/jobs/${recordId}/`);
@@ -31,44 +32,55 @@ export default function Create() {
 
   async function onSubmit(e) {
     e.preventDefault();
-    const newCandidate = { ...form };
-    await fetch(`http://localhost:5000/record/${recordId}/applications/add`, {
+    const formData = new FormData();
+    formData.append("job_id", recordId);
+    formData.append("q1", form.q1);
+    formData.append("q2", form.q2);
+    formData.append("q3", form.q3);
+    formData.append("q4", form.q4);
+    formData.append("resume", form.resume);
+    
+    await fetch(`http://127.0.0.1:8001/api/resumes/apply/`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newCandidate),
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to add candidate.");
-      }
-      else {
-        window.alert("Your Application is submitted successfully");
-      }
-      navigate("/");
-    }).catch((error) => {
-      window.alert(error.message);
-    });
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to add candidate.");
+        } else {
+          window.alert("Your Application is submitted successfully");
+        }
+        navigate("/");
+      })
+      .catch((error) => {
+        window.alert(error.message);
+      });
     setForm({
+      job_id: 0,
       q1: "",
       q2: "",
       q3: "",
       q4: "",
       resume: null,
     });
-    navigate("/");
   }
 
+  console.log (form);
   if (!record) {
     return <div>Loading...</div>;
   }
 
   return (
-<div className="container">
-  <div className="row justify-content-center">
-    <div className="col-md-6">
-      <h3 className="form-title">Application</h3>
-      <form className="application-form" onSubmit={onSubmit}>
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <h3 className="form-title">Application</h3>
+          <form
+            className="application-form"
+            method="post"
+            encType="multipart/form-data"
+            onSubmit={onSubmit}
+          >
         <div className="form-group">
           <label htmlFor="skills">1. Please provide a list of your relevant skills based on the job description.</label>
           <input
