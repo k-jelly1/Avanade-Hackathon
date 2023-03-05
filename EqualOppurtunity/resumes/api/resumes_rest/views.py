@@ -49,23 +49,25 @@ def list_resume_for_job(request, pk=None):
 	
 	else: 
 		#if post, request must contain resume information and job_id 
-		content = json.loads(request.body)
-		print(content)
+		# content = json.loads(request.body)
+		# print(content)
 		try:
-			job_id = content["job_id"]
-			
+			if 'pdf_file' in request.FILES: 
+				print(request.Files["pdf_file"])
+			# job_id = content["job_id"]
+			print(request)
 			print(('pdf_file' in request.FILES))
 
 			# print(resume_pdf)
 			
-			JobVO = JobAppsVO.objects.get(job_id=job_id)
+			# JobVO = JobAppsVO.objects.get(job_id=job_id)
 			
 			#JobVO exists in db -> job is valid to apply for 
 
 			# need to alter content of incoming data and format from pdf to text.
-			content["job"] = JobVO
+			# content["job"] = JobVO
 			# content["job_id"] = ""
-			resume = Resume.objects.create(**content)
+			# resume = Resume.objects.create(**content)
 
 			return JsonResponse({"message:": "resume successfully added"})
 		except JobAppsVO.DoesNotExist:
