@@ -19,10 +19,7 @@ npm start
 
 ## Installing dependencies for backend 
 
-cd into main project directory with the requirements.txt file: 
-```ruby 
-cd Avanade-Hackathon
-```
+cd into main directory of the project - 'Avanade-Hackathon' with the requirements.txt file then run: 
 
 ```ruby 
 pip install -r requirements.txt
