@@ -38,7 +38,7 @@ export default function Create() {
     formData.append("q2", form.q2);
     formData.append("q3", form.q3);
     formData.append("q4", form.q4);
-    formData.append("resume", form.resume);
+    formData.append("pdfFile", form.resume);
     
     await fetch(`http://127.0.0.1:8001/api/resumes/apply/`, {
       method: "POST",
