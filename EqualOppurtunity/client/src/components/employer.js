@@ -1,36 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import YouTube from 'react-youtube';
 import './employer.css';
 
-const videoId = 'QbK4Ge8zgF8';
+const API_KEY = '';
+const SEARCH_QUERY = 'unconscious bias in hiring';
 
-const opts = {
-  height: '100%',
-  width: '100%',
-  playerVars: {
-    autoplay: 0,
-  },
-};
+const Employer = () => {
+  const [videos, setVideos] = useState([]);
 
-function App() {
+  useEffect(() => {
+    axios.get(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&part=snippet&type=video&maxResults=8&q=${SEARCH_QUERY}`)
+      .then((response) => {
+        setVideos(response.data.items);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Resources</h1>
-        <h2>Unconscious Bias in Hiring</h2>
-      </header>
-      <div className="Video-grid">
-  {[...Array(5)].map((_, i) => (
-    <div className="video-thumbnail" key={i}>
-      <h3>Video {i + 1}</h3>
-      <div className="video-wrapper">
-        <iframe src={`https://www.youtube.com/embed/${videoId}`} frameborder="0" allowfullscreen></iframe>
+    <div className="employer">
+      <h1>Resources</h1>
+      <h2>Unconscious Bias in Hiring</h2>
+      <div className="video-grid">
+        {videos.map((video) => (
+          <div className="video-thumbnail" key={video.id.videoId}>
+            <h3>{video.snippet.title}</h3>
+            <div className="video-wrapper">
+              <YouTube videoId={video.id.videoId} />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
-  ))}
-</div>
-    </div>
   );
-}
+};
 
-export default App;
+export default Employer;
