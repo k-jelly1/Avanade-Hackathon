@@ -1,9 +1,14 @@
 from django.shortcuts import render
 import json
 from django.utils.datastructures import MultiValueDict
-import PyPDF2
 import io
 import re 
+import PyPDF2
+import numpy as np # linear algebra
+# import joblib
+# import pandas as pd
+
+# model = joblib.load('C:/Users/kelly.jiang/projects/Avanade-Hackathon/EqualOppurtunity/resumes/api/resumes_rest/resume_parser_txt_file.txt')
 
 # Create your views here.
 from django.http import JsonResponse 
@@ -30,6 +35,20 @@ class ResumeDecoder(ModelEncoder):
 	# 	"id", "first_name", "last_name", "email", "phone", "work_experience", "past_projects", "certificates", "education", "job"
 	# ]
     encoders = {"job": JobVODecoder()}
+    
+# def extract_name(resume_text):
+# 	nlp_text = nlp(resume_text)
+    
+#     # First name and Last name are always Proper Nouns
+#     pattern = [{'POS': 'PROPN'}, {'POS': 'PROPN'}]
+    
+#     matcher.add('NAME', [pattern], on_match = None)
+#     matches = matcher(nlp_text)
+    
+#     for match_id, start, end in matches:
+#         span = nlp_text[start:end]
+#         return span.text
+
     
 
 #returns all resume based on job id 
@@ -58,7 +77,10 @@ def list_resume_for_job(request, pk=None):
 	
 		try:
 			pdf_file = request.FILES.get('pdfFile')
-			# print(pdf_file['Resume'])
+			# df = pd.read_csv(pdf_file)
+			# predictions = model.predict(df)
+			# return render(request, 'predictions.html', {'predictions': predictions})
+			
 
 
 			# pdf_file = request.FILES.get('pdfFile')
@@ -76,25 +98,49 @@ def list_resume_for_job(request, pk=None):
 			bytes_data = json_data.encode("utf-8")
 
 			data = re.sub(r'[^\x20-\x7E]+', '', bytes_data.decode('utf-8'))
+			match = re.search(r"(\b[A-Z][a-z]+)\s(\b[A-Z][a-z]+\b)", data)
+			first_name = match.group(1)
+			last_name = match.group(2)
+
+			
+			#extract email address 
+
+
+		
+			
+			print(f"First name: {first_name}")
+			print(f"Last name: {last_name}")
+
+			match = re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', data)
+			email = match.group()
+			print(f"Email: {email}")
+			
+
+			# print(data)
+			
+
+
+
+		
 			
 		
-			index_space = data.index(' ')
-			first_name = data[1:index_space]
+			# index_space = data.index(' ')
+			# first_name = data[1:index_space]
 			
-			last_name = data.split()[1]
+			# last_name = data.split()[1]
 
-			remove_arr = []
-			remove_arr.append(first_name)
-			remove_arr.append(last_name)
-			remove_arr.append(data.split()[0])
-			new_string = data 
-			for word in data.split():
-				for substring in remove_arr:
-					word = word.replace(substring,"*"*len(substring))
+			# remove_arr = []
+			# remove_arr.append(first_name)
+			# remove_arr.append(last_name)
+			# remove_arr.append(data.split()[0])
+			# new_string = data 
+			# for word in data.split():
+			# 	for substring in remove_arr:
+			# 		word = word.replace(substring,"*"*len(substring))
 					
-				new_string+=word+" "
+			# 	new_string+=word+" "
 
-			print(new_string.strip())
+			# print(new_string.strip())
 		
 			# data = data.replace(first_name, "*" * len(first_name))
 			# data = data.replace(last_name, "*" * len(last_name))	
