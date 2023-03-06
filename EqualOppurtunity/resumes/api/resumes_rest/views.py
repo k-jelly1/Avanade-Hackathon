@@ -77,8 +77,8 @@ class ResumeDecoder(ModelEncoder):
 @require_http_methods(["GET", "POST"])
 def list_resume_for_job(request, pk=None):
 	if request.method == "GET" and pk is not None:
-		# try:
-		if True: 
+		try:
+		# if True: 
 			jobVO = JobAppsVO.objects.get(job_id=pk)
 			# print(jobVO)
 			resumes = Resume.objects.filter(job=jobVO)
@@ -123,8 +123,8 @@ def list_resume_for_job(request, pk=None):
 			print("end of try catch")
 			return JsonResponse({"resumes": resumes}, encoder=ResumeDecoder)
 	
-		# except: 
-		# 	return JsonResponse({"message": "not a valid job id"})
+		except: 
+			return JsonResponse({"message": "not a valid job id or no resumes exist for job yet"})
 		
 	
 	if request.method == "GET" and pk is None:
