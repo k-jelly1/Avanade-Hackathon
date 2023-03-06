@@ -19,8 +19,7 @@ npm start
 
 ## How to run the backend server:
 
-## Installing dependencies for backend 
-
+Installing dependencies for backend 
 cd into main directory of the project / 'Avanade-Hackathon' with the requirements.txt file then run: 
 
 ```ruby 
