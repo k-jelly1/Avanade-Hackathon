@@ -1,6 +1,7 @@
-# Figma Prototype
+# Figma Prototype (See First)
 
-https://www.figma.com/proto/AUfdvHOnJHUdhnFVwvQrhi/Avanade-Hack?node-id=1%3A234&scaling=scale-down-width&page-id=0%3A1&starting-point-node-id=1%3A53
+https://www.figma.com/proto/AUfdvHOnJHUdhnFVwvQrhi/Avanade-Hack?node-id=1%3A53&scaling=scale-down&page-id=0%3A1&starting-point-node-id=1%3A53
+
 # Avanade-Hackathon
 
 **Safe Apply** is a web app that allows job seekers to apply for jobs anonymously while emphasizing more in their talent. To achieve this, we encrypt all identifying information to help recruiters make fair and unbiased hiring decisions in the initial screening process. This not only helps eliminate unconscious bias but also encourages employers to focus more on a candidate's skills and experience.
