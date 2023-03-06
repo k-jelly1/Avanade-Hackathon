@@ -29,7 +29,7 @@ class JobVODecoder(ModelEncoder):
 class ResumeDecoder(ModelEncoder):
     model = Resume
     properties = [
-	    "file",
+	    "first_name", "last_name", "email", "resume_text"
 	]
     # properties = [
 	# 	"id", "first_name", "last_name", "email", "phone", "work_experience", "past_projects", "certificates", "education", "job"
@@ -49,22 +49,82 @@ class ResumeDecoder(ModelEncoder):
 #         span = nlp_text[start:end]
 #         return span.text
 
-    
+
+# def noRre(self, s):
+#         """
+#         :type s: str
+#         :rtype: str
+#         """
+#         global result 
+#         result = ""
+        
+#         def expand(i, j):
+#             global result 
+            
+#             while 0<= i and j < len(s) and s[i] == s[j]:
+#                 if len(result) < j-i+1:
+#                     result=s[i:j+1] 
+#                 i-=1
+#                 j+=1
+                
+#         for i in range(len(s)):
+#             # if i&2 == 0:
+#                 expand(i, i+1)
+#             # else: 
+#                 expand(i,i) 
 
 #returns all resume based on job id 
 @require_http_methods(["GET", "POST"])
 def list_resume_for_job(request, pk=None):
 	if request.method == "GET" and pk is not None:
-		try:
+		# try:
+		if True: 
 			jobVO = JobAppsVO.objects.get(job_id=pk)
-			print(jobVO)
+			# print(jobVO)
 			resumes = Resume.objects.filter(job=jobVO)
+			
+			
 			print(resumes)
+			for resume in resumes:
+				list = []
+				first_name = resume.first_name
+				data = resume.resume_text
+				last_name = resume.last_name
+				replacement = "*" * len(first_name)
+				# pattern = re.compile(re.escape(first_name), re.IGNORECASE)
+				# string = pattern.sub(replacement, data)
+				new_string1 = data.replace(first_name, replacement)	
+				new_string2 = new_string1.replace(first_name.lower(), replacement)
+				new_string2 = new_string2.replace(last_name, replacement)	
+				new_string2 = new_string2.replace(last_name.lower(), replacement)
+				new_string2 = new_string2.replace('\n',' ')
+				
+
+				print("Updated Resume ------  \n")
+				print(new_string2)
+				
+
+			# last_name = resumes.last_name
+			# email = resumes.email
+
+			
+			# data.remove(first_name)
+			# data.remove(last_name)
+
+			# data.remove(email)
+			replacement = "*" * len(first_name)
+			new_string = data.replace(first_name, replacement)
+			print(new_string)
+
+
+		
+			print(resumes)
+
 			print("end of try catch")
 			return JsonResponse({"resumes": resumes}, encoder=ResumeDecoder)
 	
-		except: 
-			return JsonResponse({"message": "not a valid job id"})
+		# except: 
+		# 	return JsonResponse({"message": "not a valid job id"})
 		
 	
 	if request.method == "GET" and pk is None:
@@ -74,8 +134,9 @@ def list_resume_for_job(request, pk=None):
 		#if post, request must contain resume information and job_id 
 		# content = json.loads(request.body)
 		# print(content)
-	
+
 		try:
+		
 			pdf_file = request.FILES.get('pdfFile')
 			# df = pd.read_csv(pdf_file)
 			# predictions = model.predict(df)
@@ -98,24 +159,60 @@ def list_resume_for_job(request, pk=None):
 			bytes_data = json_data.encode("utf-8")
 
 			data = re.sub(r'[^\x20-\x7E]+', '', bytes_data.decode('utf-8'))
+		
 			match = re.search(r"(\b[A-Z][a-z]+)\s(\b[A-Z][a-z]+\b)", data)
 			first_name = match.group(1)
 			last_name = match.group(2)
 
-			
-			#extract email address 
+			print(data)
+			# #extract email address 
 
 
-		
-			
 			print(f"First name: {first_name}")
 			print(f"Last name: {last_name}")
 
 			match = re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', data)
 			email = match.group()
 			print(f"Email: {email}")
+
+			content = request.POST.copy()
+			print(content["job_id"])
+
+			job_vo = JobAppsVO.objects.get(job_id=content["job_id"])
+			del content["job_id"]
+			# content["job"] = job_vo
+			# print("length of job value stored in content ", len(content["job"]))
+			# print(content["job"])
+			content["first_name"] = first_name
+			content["last_name"] = last_name
+			content["email"] = email	
+			content["resume_text"] = data
+			del content["q1"]
+			del content["q2"]
+
+			del content["q3"]
+
+			del content["q4"]
+			content["job"] = job_vo
+			# content["job"]["job_id"] = content["job_id"]
+			# content["job_id"] = int(content["job_id"][0])
+
+
+			resume = Resume.objects.create(job=job_vo, first_name=content["first_name"], last_name=content["last_name"], email=content["email"], resume_text=data)
+			# resume.job = job_vo
+			resume.save() 
+			# resume.job = job_vo
+
+			# resume = Resume.objects.create(first_name=content["first_name"], last_name=content["last_name"], email=content["email"], job=content["job"], text = )
+			
 			
 
+			# match = re.search(r'\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}', data)
+
+
+
+			# phone_number = match.group()
+			# print(f"Phone number: {phone_number}")
 			# print(data)
 			
 
