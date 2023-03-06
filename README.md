@@ -16,6 +16,14 @@ cd client
 ```ruby
 npm start
 ```
+## Installing dependencies for backend 
+
+cd into main project directory with the requirements.txt file: 
+```cd Avanade-Hackathon
+```
+
+``` pip install -r requirements.txt
+```
 
 ## How to run the backend server:
 ```ruby
