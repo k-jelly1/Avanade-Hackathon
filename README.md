@@ -27,6 +27,10 @@ pip install -r requirements.txt
 ```
 
 ```ruby
+cd EqualOppurtunity
+```
+
+```ruby
 cd resumes 
 ```
 
