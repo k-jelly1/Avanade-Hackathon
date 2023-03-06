@@ -3,7 +3,7 @@ import axios from 'axios';
 import YouTube from 'react-youtube';
 import './employer.css';
 
-const API_KEY = 'AIzaSyD2ugkX5d2Tisuz8zlb3oMAVFC7RTXdeFo';
+const API_KEY = '';
 const SEARCH_QUERY = 'unconscious bias in hiring';
 
 const Employer = () => {
@@ -34,8 +34,8 @@ const Employer = () => {
     axios
       .get('http://127.0.0.1:8001/api/resumes/1/')
       .then((response) => {
-        setApplicationsReview(response.data.text);
-        console.log ("resume:", response.data);
+        setApplicationsReview(response.data['resumes'][0]['resume_text']);
+        console.log ("resume:", response.data['resumes'][0]['resume_text']);
       })
       .catch((error) => {
         console.error(error);

@@ -5,9 +5,11 @@ import "./view.css";
 export default function View() {
   const [form, setForm] = useState({
     title: "",
-    short_description: "",
+    job_overview: "",
     description:"",
-    preferred_experience:"",
+    requirments:"",
+    good_to_have: "",
+    benefits: "",
     records: [],
   });
   const params = useParams();
@@ -43,14 +45,19 @@ export default function View() {
     <div className="container">
       <div className="card">
         <h1 className="title">{form.title}</h1>
-        <p className="description">{form.short_description}</p>
+        <div className="label">Job Overview:</div>
+          <div className="value">{form.job_overview}</div>
         <div className="form-group">
-          <div className="label">Description:</div>
-          <div className="value">{form.description}</div>
+          <div className="label">Requirments:</div>
+          <div className="value">{form.requirments}</div>
         </div>
         <div className="form-group">
-          <div className="label">Preferred Experience:</div>
-          <div className="value">{form.preferred_experience}</div>
+          <div className="label">Good To Have</div>
+          <div className="value">{form.good_to_have}</div>
+        </div>
+        <div className="form-group">
+          <div className="label">Benefits:</div>
+          <div className="value">{form.benefits}</div>
         </div>
         <div className="button-container">
           <button className="button" onClick={() => navigate(`/create?recordId=${params.id}`)}>

@@ -10,7 +10,7 @@ from django.views.decorators.http import require_http_methods
 class JobAppDecoder(ModelEncoder):
     model = JobPosting
     properties = [
-		"id", "title", "short_description", "description", "preferred_experience", "url"
+		"id", "title", "job_overview", "requirments", "good_to_have", "benefits"
 
 	]
 

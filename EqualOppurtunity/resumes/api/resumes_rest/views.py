@@ -102,7 +102,9 @@ def list_resume_for_job(request, pk=None):
 
 				print("Updated Resume ------  \n")
 				print(new_string2)
-				
+				text = new_string2.replace("\u00b7", "-")
+				text = text.replace("\u2013", "-")
+				resume.resume_text = text
 
 			# last_name = resumes.last_name
 			# email = resumes.email
@@ -186,7 +188,7 @@ def list_resume_for_job(request, pk=None):
 			content["first_name"] = first_name
 			content["last_name"] = last_name
 			content["email"] = email	
-			# content["resume_text"] = data
+			content["resume_text"] = data
 			del content["q1"]
 			del content["q2"]
 
